@@ -5,14 +5,46 @@ module.exports = async (req, res) => {
   // call metrohero ap
   console.log("time to look for data");
   console.log(req.body);
-  const { stationId, lineId, numberOfResults } = req.body;
-  const trains = await metroHeroService(stationId);
+  const { originCode, destinationCode, lineCode, numberOfResults } = req.body;
+  const trains = await metroHeroService(originCode);
   //console.log(apiResponse);
   console.log("about to respond");
 
   //return next 3 trains by train code
+  const requestedTrainsByLineDestination = _.filter(trains, {
+    Line: lineCode,
+    DestinationCode: destinationCode
+  });
 
-  const requestedTrains = _.filter(trains, ["Line", lineId]);
+  const slicedTrains = _.slice(
+    requestedTrainsByLineDestination,
+    0,
+    numberOfResults
+  );
 
-  return res.status(200).json(_.slice(requestedTrains, 0, numberOfResults));
+  slicedTrains.forEach((trainData, i) => {
+    const {
+      Car,
+      Min,
+      minutesAway,
+      currentStationName,
+      secondsSinceLastMoved,
+      estimatedMinutesAway,
+      isScheduled
+    } = trainData;
+    slicedTrains[i] = Object.assign(
+      {},
+      {
+        Car,
+        Min,
+        minutesAway,
+        currentStationName,
+        secondsSinceLastMoved,
+        estimatedMinutesAway,
+        isScheduled
+      }
+    );
+  });
+
+  return res.status(200).json(slicedTrains);
 };

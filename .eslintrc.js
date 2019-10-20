@@ -1,20 +1,18 @@
 module.exports = {
-  env: {
-    es6: true,
-    node: true
-  },
   extends: ["airbnb"],
-  globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly"
-  },
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true
-    },
-    ecmaVersion: 2018,
-    sourceType: "module"
-  },
   plugins: ["jest"],
-  rules: {}
+  rules: {
+    "max-len": [
+      "warn",
+      160,
+      2,
+      {
+        ignoreUrls: true,
+        ignoreComments: true,
+        ignoreRegExpLiterals: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true
+      }
+    ]
+  }
 };

@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-module.exports = async stationId => {
+module.exports = async originCode => {
   const client = axios.create({
     baseUrl: "https://dcmetrohero.com/api/v1",
     headers: {
@@ -11,7 +11,7 @@ module.exports = async stationId => {
 
   try {
     const response = await client.get(
-      `https://dcmetrohero.com/api/v1/metrorail/stations/${stationId}/trains`
+      `https://dcmetrohero.com/api/v1/metrorail/stations/${originCode}/trains`
     );
     return response.data;
   } catch (error) {
