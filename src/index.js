@@ -21,27 +21,15 @@ constmodule.exports = async event => {
 };*/
 
 // Require the framework and instantiate it
-const api = require("lambda-api")();
 const metroTracker = require("./get-station-info");
 
-api.get("/getStationInfo", async (req, res) => {
-  console.log("start");
-  console.log("stop");
-
-  return await metroTracker(req, res);
-});
-/*
-const apiHelper = require("./utils/api")([
+const api = require("./utils/api")([
   {
-    method: "GET",
+    method: "POST",
     path: "/getStationInfo",
-    handler: metroTracker.fetchData(event, context)
+    handler: metroTracker
   }
-]);*/
-
+]);
 exports.handler = async (event, context) => {
-  // Run the request
-  return await api.run(event, context);
+  return api(event, context);
 };
-
-// exports.handler = (event, context) => api(event, context);
